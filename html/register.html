@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>register</title>
+    <link rel="stylesheet" href="./css/bg.css">
+    <link rel="stylesheet" href="./css/frame.css">
+</head>
+<body>
+    <div class="box1">
+        <h2>注册</h2>
+        <form id = "login-form">
+            <input type="text" name="username" placeholder="用户名">
+            <input type="password" name="password" placeholder="密码">
+            <button id = "register-btn" type="submit">注册</button>
+        </form>
+        <button id = "back-to-login" style="background-color: rgba(159, 209, 233, 0.062);">返回登录</button>
+    </div> 
+    <script>
+        const form = document.getElementById('login-form');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // 阻止表单默认提交行为
+            const formData = new FormData(form);
+        fetch('/register', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                window.location.href = '/login'; // 注册成功后重定向到登录页
+            } else {
+                alert(data.message); // 显示错误信息
+            }
+        })
+        });
+        document.getElementById('back-to-login').addEventListener('click', function() {
+            window.location.href = '/login';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/bg.css">
+    <link rel="stylesheet" href="./css/frame.css">
+    <title>Welcome!</title>
+</head>
+<body>
+    <div class="box" style="background-color: rgba(111, 107, 109, 0.4);height: 40px;left:75px;bottom:200px">
+        <h1 style="font:bolder 30px 'KaiTi';padding-left:75px;">你的私人博客<h1>
+    </div>
+    <div class="box" style="width:50px;top:154px;left:-200px;background-color:rgba(111, 107, 109, 0);">
+        <button id="login-btn" style="background-color: rgba(198, 219, 237, 0);">登入</botton>
+        <script>
+            document.getElementById("login-btn").addEventListener("click", function() {
+                window.location.href = "./login";
+            });
+        </script>
+    </div>
+</body>
+</html>

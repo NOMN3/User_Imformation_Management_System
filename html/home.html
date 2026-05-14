@@ -1,0 +1,130 @@
+<!-- <script>
+  if (window.location.pathname.endsWith('/home')) {
+    window.history.replaceState(null, '', '/home.html'); // 修正URL
+  }
+</script> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/bg3.css">
+    <link rel="stylesheet" href="./css/main_frame.css">
+    <title>主页面</title>
+</head>
+<body class="main_box">
+    <div class="item2">
+        <div class="item2_l1">
+            <h1 style="color:rgba(107, 254, 254, 0.541)">HI!</h1>
+            <div id = "NaMe"> {name} </div>
+        </div>
+        <div class="item2_l2">
+            <button id = "logout" style="background-color: rgba(0, 0, 0, 0);">退出登录</button>
+        </div>
+    </div>
+
+    <div class="item3">
+
+    </div>
+
+    <div class="item2">
+        <button id = "new-post" style="background-color: rgba(67, 124, 148, 0.397);"><h1>新建</h1></button>
+        <!-- <button id = "delete-post" style="background-color: rgba(159, 210, 233, 0);"><h1>删除</h1></button> -->
+    </div>
+
+
+    <script>
+        document.getElementById('new-post').addEventListener('click', function() {
+            window.location.href = '/write';
+        });
+    </script>
+
+   
+
+    <script type="module">
+    import jwtDecode from 'https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/+esm';
+    async function checkAuthAndLoadPage() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('请先登录！');
+            window.location.href = '/login';
+            return; 
+        }
+        try {
+            const decodedToken = jwtDecode(token);
+            document.getElementById('NaMe').innerHTML = decodedToken.name;
+            document.getElementById('logout').addEventListener('click', function() {
+                localStorage.removeItem('token'); // 清除 token
+                window.location.href = '/login'; // 重定向到登录页
+            });
+            fetch('/api/home', { 
+                method: 'POST', 
+                headers: { 
+                    'Authorization': 'Bearer ' + token,
+                },
+                body: JSON.stringify({
+                    'id' : jwtDecode(token).id,
+                })
+            })
+            // 这里需要写一个接收后端对于用户id在redis里返回的文章id，然后渲染主页面。
+            .then(response => response.json()
+        )
+            .then(data => {
+                console.log('后端数据：',data);
+
+                const contents_2 = data.contents_2
+                const contents_id = data.content_id
+                const content = document.querySelector('.item3');
+
+                if (!contents_2 || contents_2.length === 0) {
+                    content.innerHTML = '<p>暂无文章</p>';
+                    return;
+                }
+
+                let htmlString = '';
+
+                for(let i = 0; i < contents_2.length;i++) {
+                    const cot = contents_2[i];
+                    const shortText = cot.substring(0,15);
+                    const currentId = contents_id[i]; 
+
+                    htmlString += `
+                    <div style = "padding: 10px;border-bottom: 1px solid #eee;">
+                        <strong>内容预览:</strong>${shortText}...
+                        <button class = 'see-btn' data-id = "${contents_id[i]}">查看</button>
+                    </div>
+                    `;
+                }
+                content.innerHTML = htmlString;
+
+                const contentContainer = document.querySelector('.item3');
+                contentContainer.addEventListener('click', async function(e) {
+                    if (e.target && e.target.classList.contains('see-btn')) {
+                    
+                        const clickedId = e.target.getAttribute('data-id');
+                        console.log("ID:",clickedId)
+                    // 这里写发送给后端的逻辑
+                    try {
+                        const url = `/view?content_id=${clickedId}`;
+                        window.open(url, '_blank');
+                        // window.open('/view', '_blank');
+                    } catch (error) {
+                        console.error('发送失败:', error);
+                        return
+                    }}
+                    
+                    })
+            })
+            console.log('用户已验证，页面加载完成');
+            
+        
+        } catch (error) {
+            alert('Token 无效或已过期，请重新登录！');
+            localStorage.removeItem('token'); // 清除无效 token
+            window.location.href = '/login';
+            document.querySelector('.item3').innerHTML = '<p style = "color : red;">加载错误</p>';
+        }}
+    checkAuthAndLoadPage();
+</script>
+</body>
+</html>

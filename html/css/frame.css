@@ -1,0 +1,29 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items:center;
+
+    min-height:100vh; 
+    margin:0; 
+}
+.box1{
+    /* display:flex; */
+    position:relative;
+    width:350px;
+    padding:40px;
+    background:rgba(155,155,155,0.9);
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+    flex-wrap:warp;
+}
+
+.box{
+    display:flex;
+    position:relative;
+    width:350px;
+    padding:40px;
+    background:rgba(155,155,155,0.9);
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+    flex-wrap:warp;
+}

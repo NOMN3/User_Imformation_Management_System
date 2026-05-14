@@ -1,0 +1,32 @@
+.main_box {
+    display: flex;
+    flex-direction: row;
+    border:1px solid rgba(254, 243, 243, 0.9);
+    flex-wrap:wrap;
+    margin:0;
+    min-height: 100vh;
+}
+.item2 {
+    display: flex;
+    border:0px solid rgba(220, 245, 159, 0.42);
+    flex:1;
+    background-color: rgba(71, 71, 71, 0.557);
+    margin:0;
+    flex-direction: row;
+    flex-wrap:wrap;
+}
+
+.item3 {
+    border:0px solid rgba(0, 0, 0, 0.9);
+    flex:5;
+    background-color: rgba(240, 248, 255, 0.242);
+    margin:0;
+}
+
+.item2_l1 {
+    background-color: rgba(240, 248, 255, 0);
+}
+.item2_l2 {
+    background-color: rgba(240, 248, 255, 0);
+    align-self: flex-end;
+}
